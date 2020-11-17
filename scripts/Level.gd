@@ -1,6 +1,6 @@
 extends Node2D
 
-export var padding = 20
+export var padding = 50
 
 var visibility : float = 100
 
@@ -11,10 +11,13 @@ var player_light : Light2D
 var base_texture_scale : float
 var new_texture_scale : float
 var game_over_threshold : float = 0
+var starting_light_percentage = 100
+var max_light_percentage = 110
 
 export var game_over_scene = "res://GameOver.tscn"
 export var time_points_bonus = 10
-export var visibility_increase = 7.5
+export var base_point_value = 10
+export var visibility_increase = 3
 export var darkness_rate = 10
 export var number_of_lights = 10
 export var screen_size = Vector2()
@@ -36,12 +39,14 @@ func _ready():
 	score_label.set_text("Score: " + str(Game.get_current_points()))
 	level_label = $Player/UI/CurrentLevel
 	level_label.set_text("Level: " + str(Game.get_current_level()))
+	$Player/UI/Energy.set_text("Energy: " + str(player.energy))
 	
 	base_texture_scale = player_light.texture_scale
 	screen_size = get_viewport_rect().size
 	
 	number_of_lights = int(Game.apply_level_modifier(number_of_lights))
 	darkness_rate = Game.apply_level_modifier(darkness_rate)
+	visibility_increase = Game.apply_level_modifier(visibility_increase)
 	
 	for _n in range(0, number_of_lights):
 		_spawn_light()
@@ -50,12 +55,13 @@ func _process(delta):
 	visibility -= darkness_rate * delta
 	new_texture_scale = base_texture_scale * ((visibility / 100))
 	player_light.texture_scale = new_texture_scale
+	$Player/UI/Energy.set_text("Energy: " + str(round(player.energy)))
 	
 	if !loading && Game.get_lights_collected() == number_of_lights:
 		loading = true
 		Global.update_score(Game.get_current_points())
 		Global.save_game()
-		visibility = 100
+		visibility = starting_light_percentage
 		Game.next_level()
 		get_tree().reload_current_scene()
 	elif !loading && player_light.texture_scale <= game_over_threshold:
@@ -68,15 +74,17 @@ func _process(delta):
 func _on_Player_hit():
 	light_audio.stop()
 	light_audio.play()
-	var new_points = (darkness_rate * number_of_lights) / 10
+	var new_points = (Game.apply_level_modifier(base_point_value) * number_of_lights) / 10
 	Game.collect_light()
 	Game.add_points(new_points + (time_points_bonus - time_elapsed))
-	visibility += visibility_increase
+	visibility = min(max_light_percentage, visibility + visibility_increase)
 	score_label.set_text("Score: " + str(Game.get_current_points()))
 	print("Collected " + str(Game.get_lights_collected()) + " of " + str(number_of_lights))
 
 func _get_random_position():
-	return Vector2(rand_range(padding, screen_size.x - padding), rand_range(padding, screen_size.y - padding))
+	var x_pos = rand_range(padding, screen_size.x - padding)
+	var y_pos = rand_range(padding, screen_size.y - padding)
+	return Vector2(x_pos, y_pos)
 
 func _spawn_light():
 	var light = $LightOrb.duplicate()
