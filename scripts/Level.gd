@@ -10,11 +10,11 @@ var player : KinematicBody2D
 var player_light : Light2D
 var base_texture_scale : float
 var new_texture_scale : float
-var game_over_threshold : float = 0.1
+var game_over_threshold : float = 0
 
 export var game_over_scene = "res://GameOver.tscn"
 export var time_points_bonus = 10
-export var visibility_increase = 5
+export var visibility_increase = 7.5
 export var darkness_rate = 10
 export var number_of_lights = 10
 export var screen_size = Vector2()
@@ -32,9 +32,9 @@ func _ready():
 	light_audio = get_node("LightCollectedAudio")
 	player = get_node("Player")
 	player_light = player.get_node("Camera2D/Light2D")
-	score_label = player.get_node("Score")
+	score_label = $Player/UI/Score
 	score_label.set_text("Score: " + str(Game.get_current_points()))
-	level_label = player.get_node("CurrentLevel")
+	level_label = $Player/UI/CurrentLevel
 	level_label.set_text("Level: " + str(Game.get_current_level()))
 	
 	base_texture_scale = player_light.texture_scale
@@ -79,8 +79,7 @@ func _get_random_position():
 	return Vector2(rand_range(padding, screen_size.x - padding), rand_range(padding, screen_size.y - padding))
 
 func _spawn_light():
-	var Light = get_node("Light")
-	var light = Light.duplicate()
+	var light = $LightOrb.duplicate()
 	light.show()
 	light.position = _get_random_position()
 	add_child(light)

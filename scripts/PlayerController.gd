@@ -18,8 +18,10 @@ func _physics_process(delta):
 	if input_vector != Vector2.ZERO:
 		velocity += input_vector * acceleration * delta
 		velocity = velocity.clamped(max_speed * delta)
+		$Sprite/Tail.emitting = true
 	else: 
 		velocity = velocity.move_toward(Vector2.ZERO, friction * delta)
+		$Sprite/Tail.emitting = false
 	
 	var collision = move_and_collide(velocity)
 	
@@ -33,8 +35,3 @@ func _handle_collision(collision):
 		light.hide()
 		light.free()
 		emit_signal("hit")
-
-#func _on_Light_body_entered(area):
-#	if area.is_visible():
-#		area.hide()
-#		emit_signal("hit")

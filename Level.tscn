@@ -1,6 +1,6 @@
-[gd_scene load_steps=21 format=2]
+[gd_scene load_steps=25 format=2]
 
-[ext_resource path="res://sprites/background.png" type="Texture" id=1]
+[ext_resource path="res://sprites/black_bg.png" type="Texture" id=1]
 [ext_resource path="res://scripts/Level.gd" type="Script" id=2]
 [ext_resource path="res://scripts/PlayerController.gd" type="Script" id=3]
 [ext_resource path="res://sprites/light.png" type="Texture" id=4]
@@ -12,32 +12,39 @@
 [ext_resource path="res://scripts/Light.gd" type="Script" id=10]
 [ext_resource path="res://audio/new_level.wav" type="AudioStream" id=11]
 
-[sub_resource type="CanvasItemMaterial" id=1]
-light_mode = 2
+[sub_resource type="Gradient" id=1]
 
-[sub_resource type="DynamicFont" id=2]
+[sub_resource type="GradientTexture" id=2]
+gradient = SubResource( 1 )
+
+[sub_resource type="CanvasItemMaterial" id=3]
+
+[sub_resource type="CanvasItemMaterial" id=4]
+blend_mode = 1
+
+[sub_resource type="CanvasItemMaterial" id=5]
+
+[sub_resource type="Gradient" id=14]
+colors = PoolColorArray( 0.90335, 0.964473, 0.613397, 1, 0, 0, 0, 1 )
+
+[sub_resource type="CircleShape2D" id=13]
+radius = 58.7719
+
+[sub_resource type="DynamicFont" id=7]
 size = 20
 extra_spacing_char = 1
 font_data = ExtResource( 7 )
 
-[sub_resource type="CanvasItemMaterial" id=3]
-blend_mode = 1
+[sub_resource type="OccluderPolygon2D" id=8]
+polygon = PoolVector2Array( -2.05943, -1.41039, -2.05943, -1.35395, -2.02347, -1.35395, -2.02347, -1.40391 )
 
-[sub_resource type="CanvasItemMaterial" id=4]
-blend_mode = 1
-light_mode = 1
-
-[sub_resource type="RectangleShape2D" id=5]
-extents = Vector2( 87.1723, 89.6855 )
-
-[sub_resource type="CanvasItemMaterial" id=6]
+[sub_resource type="CanvasItemMaterial" id=9]
 render_priority = 2
-blend_mode = 1
 
-[sub_resource type="RectangleShape2D" id=7]
+[sub_resource type="RectangleShape2D" id=10]
 extents = Vector2( 48.5305, 51.8467 )
 
-[sub_resource type="Environment" id=8]
+[sub_resource type="Environment" id=11]
 background_mode = 4
 background_energy = 7.74
 background_canvas_max_layer = 1
@@ -59,22 +66,34 @@ glow_hdr_threshold = 0.5
 glow_hdr_scale = 0.33
 glow_bicubic_upscale = true
 
-[sub_resource type="CanvasItemMaterial" id=9]
+[sub_resource type="CanvasItemMaterial" id=12]
 
 [node name="Level" type="Node2D"]
 script = ExtResource( 2 )
 padding = 60
 
+[node name="Light2D" type="Light2D" parent="."]
+light_mask = 2
+position = Vector2( 587.203, 265.108 )
+scale = Vector2( 1.27949, 1981.9 )
+texture = SubResource( 2 )
+energy = 4.22
+range_item_cull_mask = 2
+shadow_item_cull_mask = 2
+
 [node name="TimeElapsedTimer" type="Timer" parent="."]
 wait_time = 0.5
 autostart = true
 
+[node name="CanvasModulate" type="CanvasModulate" parent="."]
+position = Vector2( 3.05176e-05, 3.05176e-05 )
+color = Color( 0.00392157, 0.00392157, 0.00392157, 1 )
+
 [node name="Background" type="Sprite" parent="."]
-light_mask = 2
-material = SubResource( 1 )
-position = Vector2( 511.146, 299.22 )
-scale = Vector2( 255.388, 160.127 )
-z_index = -1
+material = SubResource( 3 )
+position = Vector2( 511.146, 298.194 )
+scale = Vector2( 448.813, 281.404 )
+z_index = -2
 texture = ExtResource( 1 )
 
 [node name="Player" type="KinematicBody2D" parent="."]
@@ -83,34 +102,6 @@ script = ExtResource( 3 )
 acceleration = 100
 max_speed = 300
 friction = 50
-
-[node name="Score" type="Label" parent="Player"]
-margin_left = -445.669
-margin_top = -246.775
-margin_right = -374.669
-margin_bottom = -226.775
-rect_pivot_offset = Vector2( 137.351, -67.2713 )
-custom_fonts/font = SubResource( 2 )
-custom_colors/font_color = Color( 1, 1, 1, 1 )
-text = "Score: 0"
-uppercase = true
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="CurrentLevel" type="Label" parent="Player"]
-margin_left = -445.669
-margin_top = -214.929
-margin_right = -374.669
-margin_bottom = -194.929
-rect_pivot_offset = Vector2( 137.351, -67.2713 )
-custom_fonts/font = SubResource( 2 )
-custom_colors/font_color = Color( 1, 1, 1, 1 )
-text = "Level: 0"
-uppercase = true
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
 position = Vector2( 0.291199, -1.02597 )
@@ -124,58 +115,123 @@ __meta__ = {
 modulate = Color( 0.0705882, 0.0588235, 0.0588235, 1 )
 self_modulate = Color( 0.0313726, 0.0235294, 0.0235294, 1 )
 light_mask = 2
-material = SubResource( 3 )
+material = SubResource( 4 )
 position = Vector2( -0.291199, 1.02597 )
 scale = Vector2( 10.6513, -10.6015 )
 texture = ExtResource( 6 )
-color = Color( 0.427451, 0.454902, 0.403922, 1 )
-mode = 3
-range_item_cull_mask = 2
-shadow_color = Color( 0.0941176, 0.0901961, 0.0901961, 1 )
-shadow_gradient_length = 5.0
-shadow_item_cull_mask = 2
+energy = 2.0
+shadow_enabled = true
+shadow_color = Color( 0.972549, 0.988235, 0.796078, 1 )
+shadow_buffer_size = 512
+shadow_gradient_length = 10.0
+shadow_filter_smooth = 10.0
 __meta__ = {
 "_edit_lock_": true
 }
 
 [node name="Sprite" type="Sprite" parent="Player"]
-light_mask = 2
-material = SubResource( 4 )
+material = SubResource( 5 )
 position = Vector2( 0, -0.530334 )
-scale = Vector2( 0.5, 0.5 )
+rotation = 0.785398
+scale = Vector2( 0.25, 0.25 )
 texture = ExtResource( 5 )
+
+[node name="Tail" type="CPUParticles2D" parent="Player/Sprite"]
+amount = 100
+lifetime = 0.25
+speed_scale = 0.5
+randomness = 1.0
+lifetime_randomness = 0.25
+local_coords = false
+emission_shape = 1
+emission_sphere_radius = 30.0
+direction = Vector2( 0, 0 )
+spread = 10.0
+gravity = Vector2( 0, 0 )
+initial_velocity = 1.0
+initial_velocity_random = 1.0
+angular_velocity = 1.0
+angular_velocity_random = 1.0
+orbit_velocity_random = 1.0
+linear_accel = 1.0
+linear_accel_random = 1.0
+angle = 2.0
+angle_random = 1.0
+scale_amount = 5.0
+scale_amount_random = 1.0
+color_ramp = SubResource( 14 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
 position = Vector2( 0, -0.530334 )
 scale = Vector2( 0.5, 0.5 )
-shape = SubResource( 5 )
+shape = SubResource( 13 )
 
-[node name="Light" type="StaticBody2D" parent="."]
+[node name="UI" type="Node2D" parent="Player"]
+self_modulate = Color( 0.121569, 0.113725, 0.113725, 1 )
+light_mask = 2
+z_index = -1
+
+[node name="Score" type="Label" parent="Player/UI"]
+light_mask = 2
+margin_left = -445.669
+margin_top = -246.775
+margin_right = -374.669
+margin_bottom = -226.775
+rect_pivot_offset = Vector2( 137.351, -67.2713 )
+custom_fonts/font = SubResource( 7 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+text = "Score: 0"
+uppercase = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CurrentLevel" type="Label" parent="Player/UI"]
+light_mask = 2
+margin_left = -445.669
+margin_top = -214.929
+margin_right = -374.669
+margin_bottom = -194.929
+rect_pivot_offset = Vector2( 137.351, -67.2713 )
+custom_fonts/font = SubResource( 7 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+text = "Level: 0"
+uppercase = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="LightOrb" type="StaticBody2D" parent="."]
 visible = false
-position = Vector2( -10, -10 )
+position = Vector2( 30, -53 )
 scale = Vector2( 0.965251, 0.965251 )
 script = ExtResource( 10 )
 
-[node name="Sprite" type="Sprite" parent="Light"]
-light_mask = 2
-material = SubResource( 6 )
+[node name="LightOccluder2D" type="LightOccluder2D" parent="LightOrb"]
+position = Vector2( 539.907, 229.184 )
+scale = Vector2( 264.582, 165.892 )
+occluder = SubResource( 8 )
+
+[node name="Sprite" type="Sprite" parent="LightOrb"]
+material = SubResource( 9 )
 use_parent_material = true
 scale = Vector2( 0.1, 0.1 )
 texture = ExtResource( 4 )
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Light"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LightOrb"]
+light_mask = 2
 scale = Vector2( 0.2, 0.2 )
-shape = SubResource( 7 )
+shape = SubResource( 10 )
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
-environment = SubResource( 8 )
+environment = SubResource( 11 )
 
 [node name="Wall_Left" type="Node" parent="."]
 
 [node name="Sprite" type="Sprite" parent="Wall_Left"]
 visible = false
 light_mask = 2
-material = SubResource( 9 )
+material = SubResource( 12 )
 position = Vector2( -25, 298.194 )
 scale = Vector2( 0.5, 6.92513 )
 z_index = 1
@@ -186,7 +242,7 @@ texture = ExtResource( 4 )
 [node name="Sprite" type="Sprite" parent="Wall_Right"]
 visible = false
 light_mask = 2
-material = SubResource( 9 )
+material = SubResource( 12 )
 position = Vector2( 1047.72, 298.194 )
 scale = Vector2( 0.5, 6.92513 )
 texture = ExtResource( 4 )
@@ -196,7 +252,7 @@ texture = ExtResource( 4 )
 [node name="Sprite" type="Sprite" parent="Wall_Top"]
 visible = false
 light_mask = 2
-material = SubResource( 9 )
+material = SubResource( 12 )
 position = Vector2( 511.085, -24.1097 )
 scale = Vector2( 10.2328, 0.479048 )
 texture = ExtResource( 4 )
@@ -206,7 +262,7 @@ texture = ExtResource( 4 )
 [node name="Sprite" type="Sprite" parent="Wall_Bottom"]
 visible = false
 light_mask = 2
-material = SubResource( 9 )
+material = SubResource( 12 )
 position = Vector2( 515.83, 620.769 )
 scale = Vector2( 10.3723, 0.473638 )
 texture = ExtResource( 4 )
