@@ -6,6 +6,8 @@ export var friction = 25
 
 var velocity = Vector2.ZERO
 export var energy = 100
+var energy_use = 50
+var energy_regen = 10
 
 signal hit
 
@@ -17,11 +19,14 @@ func _physics_process(delta):
 	input_vector = input_vector.normalized()
 	
 	var sprint_multiplier = 1
-	if energy > 0 and Input.is_action_pressed("ui_accept"):
-		sprint_multiplier = 1.25
-		energy = max(0, energy - (50 * delta))
+	var energy_left = max(0, energy - (energy_use * delta))
+	
+	if Input.is_action_pressed("ui_accept"):
+		if energy_left > 0:
+			sprint_multiplier = 1.5
+			energy = floor(max(0, energy_left))
 	else:
-		energy = min(100, energy + (10 * delta))
+		energy = ceil(min(100, energy + (energy_regen * delta)))
 	
 	if input_vector != Vector2.ZERO:
 		velocity += input_vector * acceleration * delta

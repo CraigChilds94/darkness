@@ -24,27 +24,27 @@ blend_mode = 1
 
 [sub_resource type="CanvasItemMaterial" id=5]
 
-[sub_resource type="Gradient" id=14]
+[sub_resource type="Gradient" id=6]
 colors = PoolColorArray( 0.90335, 0.964473, 0.613397, 1, 0, 0, 0, 1 )
 
-[sub_resource type="CircleShape2D" id=13]
+[sub_resource type="CircleShape2D" id=7]
 radius = 58.7719
 
-[sub_resource type="DynamicFont" id=7]
+[sub_resource type="DynamicFont" id=8]
 size = 20
 extra_spacing_char = 1
 font_data = ExtResource( 7 )
 
-[sub_resource type="OccluderPolygon2D" id=8]
+[sub_resource type="OccluderPolygon2D" id=9]
 polygon = PoolVector2Array( -2.05943, -1.41039, -2.05943, -1.35395, -2.02347, -1.35395, -2.02347, -1.40391 )
 
-[sub_resource type="CanvasItemMaterial" id=9]
+[sub_resource type="CanvasItemMaterial" id=10]
 render_priority = 2
 
-[sub_resource type="RectangleShape2D" id=10]
+[sub_resource type="RectangleShape2D" id=11]
 extents = Vector2( 48.5305, 51.8467 )
 
-[sub_resource type="Environment" id=11]
+[sub_resource type="Environment" id=12]
 background_mode = 4
 background_energy = 7.74
 background_canvas_max_layer = 1
@@ -66,7 +66,7 @@ glow_hdr_threshold = 0.5
 glow_hdr_scale = 0.33
 glow_bicubic_upscale = true
 
-[sub_resource type="CanvasItemMaterial" id=12]
+[sub_resource type="CanvasItemMaterial" id=13]
 
 [node name="Level" type="Node2D"]
 script = ExtResource( 2 )
@@ -159,12 +159,12 @@ angle = 2.0
 angle_random = 1.0
 scale_amount = 5.0
 scale_amount_random = 1.0
-color_ramp = SubResource( 14 )
+color_ramp = SubResource( 6 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
 position = Vector2( 0, -0.530334 )
 scale = Vector2( 0.5, 0.5 )
-shape = SubResource( 13 )
+shape = SubResource( 7 )
 
 [node name="UI" type="Node2D" parent="Player"]
 self_modulate = Color( 0.121569, 0.113725, 0.113725, 1 )
@@ -178,7 +178,7 @@ margin_top = -246.775
 margin_right = -374.669
 margin_bottom = -226.775
 rect_pivot_offset = Vector2( 137.351, -67.2713 )
-custom_fonts/font = SubResource( 7 )
+custom_fonts/font = SubResource( 8 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 text = "Score: 0"
 uppercase = true
@@ -193,7 +193,7 @@ margin_top = -182.775
 margin_right = -374.669
 margin_bottom = -162.775
 rect_pivot_offset = Vector2( 137.351, -67.2713 )
-custom_fonts/font = SubResource( 7 )
+custom_fonts/font = SubResource( 8 )
 custom_colors/font_color = Color( 0.423529, 0.67451, 0.462745, 1 )
 text = "Energy: 100"
 uppercase = true
@@ -208,7 +208,7 @@ margin_top = -214.929
 margin_right = -374.669
 margin_bottom = -194.929
 rect_pivot_offset = Vector2( 137.351, -67.2713 )
-custom_fonts/font = SubResource( 7 )
+custom_fonts/font = SubResource( 8 )
 custom_colors/font_color = Color( 0.92549, 0.431373, 0.431373, 1 )
 text = "Level: 0"
 uppercase = true
@@ -225,10 +225,10 @@ script = ExtResource( 10 )
 [node name="LightOccluder2D" type="LightOccluder2D" parent="LightOrb"]
 position = Vector2( 539.907, 229.184 )
 scale = Vector2( 264.582, 165.892 )
-occluder = SubResource( 8 )
+occluder = SubResource( 9 )
 
 [node name="Sprite" type="Sprite" parent="LightOrb"]
-material = SubResource( 9 )
+material = SubResource( 10 )
 use_parent_material = true
 scale = Vector2( 0.1, 0.1 )
 texture = ExtResource( 4 )
@@ -236,17 +236,17 @@ texture = ExtResource( 4 )
 [node name="CollisionShape2D" type="CollisionShape2D" parent="LightOrb"]
 light_mask = 2
 scale = Vector2( 0.2, 0.2 )
-shape = SubResource( 10 )
+shape = SubResource( 11 )
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
-environment = SubResource( 11 )
+environment = SubResource( 12 )
 
 [node name="Wall_Left" type="Node" parent="."]
 
 [node name="Sprite" type="Sprite" parent="Wall_Left"]
 visible = false
 light_mask = 2
-material = SubResource( 12 )
+material = SubResource( 13 )
 position = Vector2( -25, 298.194 )
 scale = Vector2( 0.5, 6.92513 )
 z_index = 1
@@ -257,7 +257,7 @@ texture = ExtResource( 4 )
 [node name="Sprite" type="Sprite" parent="Wall_Right"]
 visible = false
 light_mask = 2
-material = SubResource( 12 )
+material = SubResource( 13 )
 position = Vector2( 1047.72, 298.194 )
 scale = Vector2( 0.5, 6.92513 )
 texture = ExtResource( 4 )
@@ -267,7 +267,7 @@ texture = ExtResource( 4 )
 [node name="Sprite" type="Sprite" parent="Wall_Top"]
 visible = false
 light_mask = 2
-material = SubResource( 12 )
+material = SubResource( 13 )
 position = Vector2( 511.085, -24.1097 )
 scale = Vector2( 10.2328, 0.479048 )
 texture = ExtResource( 4 )
@@ -277,7 +277,7 @@ texture = ExtResource( 4 )
 [node name="Sprite" type="Sprite" parent="Wall_Bottom"]
 visible = false
 light_mask = 2
-material = SubResource( 12 )
+material = SubResource( 13 )
 position = Vector2( 515.83, 620.769 )
 scale = Vector2( 10.3723, 0.473638 )
 texture = ExtResource( 4 )
