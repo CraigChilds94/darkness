@@ -35,11 +35,9 @@ func _ready():
 	light_audio = get_node("LightCollectedAudio")
 	player = get_node("Player")
 	player_light = player.get_node("Camera2D/Light2D")
-	score_label = $Player/UI/Score
-	score_label.set_text("Score: " + str(Game.get_current_points()))
-	level_label = $Player/UI/CurrentLevel
-	level_label.set_text("Level: " + str(Game.get_current_level()))
-	$Player/UI/Energy.set_text("Energy: " + str(player.energy))
+	$Player/UI/Container/Score.set_text("Score: " + str(Game.get_current_points()))
+	$Player/UI/Container/CurrentLevel.set_text("Level: " + str(Game.get_current_level()))
+	$Player/UI/Container/Energy.set_text("Energy: " + str(player.energy))
 	
 	base_texture_scale = player_light.texture_scale
 	screen_size = get_viewport_rect().size
@@ -55,7 +53,7 @@ func _process(delta):
 	visibility -= darkness_rate * delta
 	new_texture_scale = base_texture_scale * ((visibility / 100))
 	player_light.texture_scale = new_texture_scale
-	$Player/UI/Energy.set_text("Energy: " + str(round(player.energy)))
+	$Player/UI/Container/Energy.set_text("Energy: " + str(round(player.energy)))
 	
 	if !loading && Game.get_lights_collected() == number_of_lights:
 		loading = true
@@ -78,7 +76,7 @@ func _on_Player_hit():
 	Game.collect_light()
 	Game.add_points(new_points + (time_points_bonus - time_elapsed))
 	visibility = min(max_light_percentage, visibility + visibility_increase)
-	score_label.set_text("Score: " + str(Game.get_current_points()))
+	$Player/UI/Container/Score.set_text("Score: " + str(Game.get_current_points()))
 	print("Collected " + str(Game.get_lights_collected()) + " of " + str(number_of_lights))
 
 func _get_random_position():

@@ -32,10 +32,16 @@ func _physics_process(delta):
 		velocity += input_vector * acceleration * delta
 		velocity = velocity.clamped((max_speed * sprint_multiplier) * delta)
 		$Sprite/Tail.emitting = true
+		
+		var angle_radians = $Sprite.position.angle_to(velocity)
+		$Sprite.rotation = lerp($Sprite.rotation, angle_radians, 1)
+	
+		$Sprite/Tail.set_param(CPUParticles.PARAM_ANGLE, rad2deg(angle_radians))
+	
 	else: 
 		velocity = velocity.move_toward(Vector2.ZERO, friction * delta)
 		$Sprite/Tail.emitting = false
-	
+		
 	var collision = move_and_collide(velocity)
 	
 	if collision:
