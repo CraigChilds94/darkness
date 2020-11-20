@@ -23,10 +23,10 @@ func _physics_process(delta):
 	
 	if Input.is_action_pressed("ui_accept"):
 		if energy_left > 0:
-			sprint_multiplier = 1.5
+			sprint_multiplier = 2
 			energy = floor(max(0, energy_left))
 	else:
-		energy = ceil(min(100, energy + (energy_regen * delta)))
+		energy = min(100, energy + (energy_regen * delta))
 	
 	if input_vector != Vector2.ZERO:
 		velocity += input_vector * acceleration * delta
